@@ -10,10 +10,17 @@ beforeEach( async () => {
   await page.goto('localhost:3000');
 });
 
-afterEach(() => browser.close());
+afterEach(async () => {
+  await browser.close();
+});
 
-test('We can launch a browser', async () => {
+test('Header has the correct test', async () => {
   const text = await page.$eval('a.brand-logo', el => el.innerHTML);
   expect(text).toEqual('Blogster');
-  browser.close();
+});
+
+test('Click login starts oauth flow', async () => {
+  await page.click('ul.right > li > a[href="/auth/google"]');
+  const url = await page.url();
+  expect(url).toMatch('/accounts\.google\.com/');
 });
