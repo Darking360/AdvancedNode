@@ -15,7 +15,10 @@ cache:
 install:
   - npm install
   - npm run build
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
   - nohup npm run start &
-  - sleep 10
+  - sleep 5
   - npm run test
