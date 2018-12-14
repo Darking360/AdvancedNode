@@ -68,32 +68,16 @@ describe('When logged in into create blog page', () => {
 
 describe('When not logged in', () => {
   test('And tries to submit XHR to create a blog post', async () => {
-    const result = await page.evaluate(() => {
-      return fetch('api/blogs', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: 'Titulo',
-          content: 'Lorem ipsum text',
-        }),
-      }).then((res) => res.json());
-    });
+    const body = {
+      title: 'Titulo',
+      content: 'Lorem ipsum text',
+    };
+    const result = await page.post('/api/blogs', body);
     expect(result).toEqual({ error: 'You must log in!' });
   });
 
   test('And tries to get a list of posts', async () => {
-    const result = await page.evaluate(() => {
-      return fetch('api/blogs', {
-        mthod: 'GET',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then((res) => res.json());
-    });
+    const result = await page.get('api/blogs');
     expect(result).toEqual({ error: 'You must log in!' });
   });
 });
