@@ -67,6 +67,31 @@ describe('When logged in into create blog page', () => {
 });
 
 describe('When not logged in', () => {
+  const actions = [
+    {
+      method: 'get',
+      path: '/api/blogs',
+      body: {},
+    },
+    {
+      method: 'post',
+      path: '/api/blogs',
+      body: {
+        title: 'Titulo',
+        content: 'Lorem ipsum text',
+      },
+    }
+  ];
+
+  test('Blog related actions are prohibited', async () => {
+    const results = await page.execRequests(actions);
+    // results.map((result) => expect(result).toEqual({ error: 'You must log in!' }));
+    for (let result of results) {
+      expect(result).toEqual({ error: 'You must log in!' });
+    }
+  });
+
+  /*
   test('And tries to submit XHR to create a blog post', async () => {
     const body = {
       title: 'Titulo',
@@ -80,4 +105,5 @@ describe('When not logged in', () => {
     const result = await page.get('api/blogs');
     expect(result).toEqual({ error: 'You must log in!' });
   });
+  */
 });
